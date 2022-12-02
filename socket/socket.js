@@ -35,6 +35,12 @@ io.on("connection", (socket) => {
     // passing this to the function to create data to send to backend
     io.emit("getUser", users);
     //sending or emitting command to frontend to get the user information
+    //new user add- update the friend list automatically
+    const us = users.filter((u) => u.userId !== userId);
+    const con = "new_user_add";
+    for (var i = 0; i < us.length; i++) {
+      socket.to(us[i].socketId).emit("new_user_add", con);
+    }
   });
   //recieving the each message data
   socket.on("sendMessage", (data) => {
